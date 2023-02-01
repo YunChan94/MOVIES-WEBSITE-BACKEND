@@ -1,0 +1,28 @@
+{
+  "name": "nodejs-asm1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "start-server": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YunChan94/NODEJS-ASM1.git"
+  },
+  "author": "YunChan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YunChan94/NODEJS-ASM1/issues"
+  },
+  "homepage": "https://github.com/YunChan94/NODEJS-ASM1#readme"
+}
