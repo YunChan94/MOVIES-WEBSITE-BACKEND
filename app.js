@@ -1,12 +1,13 @@
-const bodyParser = require("body-parser");
-const express = require("express");
 const path = require("path");
 
-const Movies = require("./models/Movies");
+const express = require("express");
+const bodyParser = require("body-parser");
+
+const moviesRoutes = require("./routes/movie");
+
 const app = express();
 
-app.use("/", (req, res, next) => {
-  res.send("<p>Test thu</p>");
-});
+app.use(bodyParser.json());
 
+app.use("/api/movies", moviesRoutes);
 app.listen(5000);
