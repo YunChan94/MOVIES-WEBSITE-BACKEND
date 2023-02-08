@@ -8,7 +8,7 @@ const DATA_PATH = path.join(
 );
 
 const Videos = {
-  getall: function () {
+  all: function () {
     return JSON.parse(fs.readFileSync(DATA_PATH, "utf8"));
   },
 };

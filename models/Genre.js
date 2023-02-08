@@ -8,7 +8,7 @@ const DATA_PATH = path.join(
 );
 
 const Genre = {
-  getall: function () {
+  all: function () {
     return JSON.parse(fs.readFileSync(DATA_PATH, "utf8"));
   },
 };
