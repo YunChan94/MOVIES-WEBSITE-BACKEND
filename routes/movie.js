@@ -26,7 +26,8 @@ router.get("/discover", movieController.getMovieByGenre);
 //Endpoint:POST💥 /api/movies/video
 router.post("/video", movieController.getVideoByID);
 
-//Endpoint: /api/movies/search
-// router.get("/search");
+//Endpoint:POST💥 /api/movies/search
+router.post("/search/:page", movieController.searchMovie);
+router.post("/search", movieController.searchMovie);
 
 module.exports = router;

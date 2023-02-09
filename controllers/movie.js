@@ -114,7 +114,7 @@ exports.getVideoByID = (req, res, next) => {
   );
   //Nếu không tìm được video thỏa đk thì trả error
   if (!videoList) {
-    return res.status(404);
+    return res.status(404).send({ message: "Not found video", status: 404 });
   }
   // Nếu chỉ có 1 giá trị
   if (videoList.length === 1) {
@@ -137,6 +137,49 @@ exports.getVideoByID = (req, res, next) => {
       res.status(200).send(resVideo[0]);
     }
   }
+};
+
+exports.searchMovie = (req, res, next) => {
+  const keyword = req.body.keyword;
+  //Nếu không có keyword
+  if (!keyword) {
+    return res
+      .status(400)
+      .send({ message: "Not found keyword parram", status: 404 });
+  }
+
+  //Tìm những film phù hợp với đièu kiện
+  const movieList = movie.all().filter((m) => {
+    if (m.overview) {
+      return m.overview.toUpperCase().includes(keyword.toUpperCase());
+    }
+    if (m.title) {
+      return m.title.toUpperCase().includes(keyword.toUpperCase());
+    }
+  });
+
+  //Trả err Nếu không tìm được kết quả phù hợp
+  if (!movieList || movieList.length === 0) {
+    return res.status(400).send({ message: "Not found movie", status: 400 });
+  }
+
+  //Paging
+  let perPage = 20; //số lượng movie xuất hiện trên 1 page
+  let page;
+  if (!req.params.page) {
+    page = 1;
+  } else {
+    page = req.params.page;
+  }
+  const pagingList = movieList.skip(perPage * page - perPage).limit(perPage);
+  const totalPage = Math.ceil(movieList.length / perPage); //tổng số phim / số movie/page
+
+  // Gửi dữ liệu
+  res.status(200).send({
+    results: pagingList,
+    page: page,
+    total_pages: totalPage,
+  });
 };
 
 /////// Reusable Funtion ///////
