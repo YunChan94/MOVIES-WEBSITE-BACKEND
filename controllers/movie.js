@@ -150,11 +150,11 @@ exports.searchMovie = (req, res, next) => {
 
   //Tìm những film phù hợp với đièu kiện
   const movieList = movie.all().filter((m) => {
-    if (m.overview) {
-      return m.overview.toUpperCase().includes(keyword.toUpperCase());
-    }
     if (m.title) {
       return m.title.toUpperCase().includes(keyword.toUpperCase());
+    }
+    if (m.overview) {
+      return m.overview.toUpperCase().includes(keyword.toUpperCase());
     }
   });
 
