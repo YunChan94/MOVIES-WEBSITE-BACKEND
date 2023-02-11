@@ -18,7 +18,7 @@ exports.getTrending = (req, res, next) => {
   // Gửi dữ liệu
   res
     .status(200)
-    .send({ results: pagingList, page: page, total_pages: totalPage });
+    .json({ results: pagingList, page: page, total_pages: totalPage });
 };
 
 exports.getTopRating = (req, res, next) => {
@@ -37,16 +37,14 @@ exports.getTopRating = (req, res, next) => {
   // Gửi dữ liệu
   res
     .status(200)
-    .send({ results: pagingList, page: page, total_pages: totalPage });
+    .json({ results: pagingList, page: page, total_pages: totalPage });
 };
 
 exports.getMovieByGenre = (req, res, next) => {
   //Check xem user req có param genre hay chưa?
   const genreName = req.params.genreName;
   if (!genreName) {
-    return res
-      .status(400)
-      .send({ message: "Not found gerne parram", status: 400 });
+    return res.status(400).send("Not found gerne parram");
   }
 
   //Tìm trong genreList.json
@@ -56,9 +54,7 @@ exports.getMovieByGenre = (req, res, next) => {
 
   //Check xem genre được tìm thấy hay không?
   if (!genreFound) {
-    return res
-      .status(400)
-      .send({ message: "Not found that genre id", status: 400 });
+    return res.status(400).send("Not found that genre id");
   }
 
   //Lọc ra movie.genre_ids có chứa genreID
@@ -78,7 +74,7 @@ exports.getMovieByGenre = (req, res, next) => {
   const totalPage = Math.ceil(movieList.length / perPage); //tổng số phim / số movie/page
 
   // Gửi dữ liệu
-  res.status(200).send({
+  res.status(200).json({
     results: pagingList,
     page: page,
     total_pages: totalPage,
@@ -90,19 +86,15 @@ exports.getVideoByID = (req, res, next) => {
   //Check param film_id có trong req.body chưa?
   const filmID = req.body.film_id;
   if (!filmID) {
-    return res
-      .status(400)
-      .send({ message: "Not found film_id parram", status: 400 });
+    return res.status(400).send("Not found film_id parram");
   }
 
   //Tìm videoList của film
-  const film = video.all().find((f) => f.id === filmID);
+  const film = video.all().find((f) => f.id === Number(filmID));
 
   //Trả lỗi nếu không tìm được film
   if (!film) {
-    return res
-      .status(400)
-      .send({ message: "Not found film's Data", status: 400 });
+    return res.status(400).send("Not found film's Data");
   }
 
   //Lọc ra các video thỏa điều kiện
@@ -114,12 +106,12 @@ exports.getVideoByID = (req, res, next) => {
   );
   //Nếu không tìm được video thỏa đk thì trả error
   if (!videoList) {
-    return res.status(404).send({ message: "Not found video", status: 404 });
+    return res.status(404).send("Not found video");
   }
   // Nếu chỉ có 1 giá trị
   if (videoList.length === 1) {
     //Gửi dữ liệu video đã tìm thấy
-    res.status(200).send(videoList[0]);
+    res.status(200).json(videoList[0]);
   } else {
     // Nếu có nhiều giá trị, lấy video đầu tiên, ưu tiên trailer
     const trailer = videoList.filter((v) => v.type === "Trailer");
@@ -128,13 +120,13 @@ exports.getVideoByID = (req, res, next) => {
       //Sắp xếp lại mảng trailer theo published_at gần nhất, lấy video đầu tiên
       const resVideo = trailer.sort(compareDate("published_at", "desc"));
       //Gửi dữ liệu video đã tìm thấy
-      res.status(200).send(resVideo[0]);
+      res.status(200).json(resVideo[0]);
     } else {
       // Không có trailer
       //Sắp xếp lại mảng theo published_at lấy video có ngày ra mắt gần nhất
       const resVideo = videoList.sort(compareDate("published_at", "desc"));
       //Gửi dữ liệu video đã tìm thấy
-      res.status(200).send(resVideo[0]);
+      res.status(200).json(resVideo[0]);
     }
   }
 };
@@ -143,9 +135,7 @@ exports.searchMovie = (req, res, next) => {
   const keyword = req.body.keyword;
   //Nếu không có keyword
   if (!keyword) {
-    return res
-      .status(400)
-      .send({ message: "Not found keyword parram", status: 404 });
+    return res.status(400).send("Not found keyword parram");
   }
 
   //Tìm những film phù hợp với đièu kiện
@@ -160,7 +150,7 @@ exports.searchMovie = (req, res, next) => {
 
   //Trả err Nếu không tìm được kết quả phù hợp
   if (!movieList || movieList.length === 0) {
-    return res.status(400).send({ message: "Not found movie", status: 400 });
+    return res.status(400).send("Not found movie");
   }
 
   //Paging
@@ -175,7 +165,7 @@ exports.searchMovie = (req, res, next) => {
   const totalPage = Math.ceil(movieList.length / perPage); //tổng số phim / số movie/page
 
   // Gửi dữ liệu
-  res.status(200).send({
+  res.status(200).json({
     results: pagingList,
     page: page,
     total_pages: totalPage,
