@@ -131,47 +131,6 @@ exports.getVideoByID = (req, res, next) => {
   }
 };
 
-exports.searchMovie = (req, res, next) => {
-  const keyword = req.body.keyword;
-  //Nếu không có keyword
-  if (!keyword) {
-    return res.status(400).send("Not found keyword parram");
-  }
-
-  //Tìm những film phù hợp với đièu kiện
-  const movieList = movie.all().filter((m) => {
-    if (m.title) {
-      return m.title.toUpperCase().includes(keyword.toUpperCase());
-    }
-    if (m.overview) {
-      return m.overview.toUpperCase().includes(keyword.toUpperCase());
-    }
-  });
-
-  //Trả err Nếu không tìm được kết quả phù hợp
-  if (!movieList || movieList.length === 0) {
-    return res.status(400).send("Not found movie");
-  }
-
-  //Paging
-  let perPage = 20; //số lượng movie xuất hiện trên 1 page
-  let page;
-  if (!req.params.page) {
-    page = 1;
-  } else {
-    page = req.params.page;
-  }
-  const pagingList = movieList.skip(perPage * page - perPage).limit(perPage);
-  const totalPage = Math.ceil(movieList.length / perPage); //tổng số phim / số movie/page
-
-  // Gửi dữ liệu
-  res.status(200).json({
-    results: pagingList,
-    page: page,
-    total_pages: totalPage,
-  });
-};
-
 /////// Reusable Funtion ///////
 // Hàm so sánh giá trị
 const compareValues = (key, order = "asc") => {

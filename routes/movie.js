@@ -1,6 +1,7 @@
 const express = require("express");
 
 const movieController = require("../controllers/movie");
+const searchController = require("../controllers/search");
 const auth = require("../controllers/auth");
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.get("/discover", auth.authorize, movieController.getMovieByGenre);
 router.post("/video", auth.authorize, movieController.getVideoByID);
 
 //Endpoint:POST💥 /api/movies/search
-router.post("/search/:page", auth.authorize, movieController.searchMovie);
-router.post("/search", auth.authorize, movieController.searchMovie);
+router.post("/search/:page", auth.authorize, searchController.searchMovie);
+router.post("/search", auth.authorize, searchController.searchMovie);
 
 module.exports = router;
