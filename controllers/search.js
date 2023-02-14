@@ -3,11 +3,11 @@ const genre = require("../models/Genre");
 
 exports.searchMovie = (req, res, next) => {
   const keyword = req.body.keyword;
-  const genreName = req.body.genre ? req.body.genre : "";
-  const mediaType = req.body.mediaType ? req.body.mediaType : "";
-  const language = req.body.lang ? req.body.lang : "";
-  const year = req.body.year ? req.body.year : "";
-
+  const genreName = req.body.genre;
+  const mediaType = req.body.mediaType;
+  const language = req.body.lang;
+  const year = req.body.year;
+  console.log(req.body);
   //Nếu không có keyword
   if (!keyword) {
     return res.status(400).send("Not found keyword parram");
@@ -41,13 +41,14 @@ exports.searchMovie = (req, res, next) => {
   if (genreName !== "" || mediaType !== "" || language !== "" || year !== "") {
     //Tìm theo genre
     //Tìm trong genreList.json
-    const genreFound = genre
-      .all()
-      .find((g) => g.name.toUpperCase() === genreName.toUpperCase());
 
     const movieByGenre = movieList.filter((m) => {
-      if (genreFound !== "") {
-        return m.genre_ids.includes(genreFound.id);
+      if (genreName !== "") {
+        return m.genre_ids.includes(
+          genre
+            .all()
+            .find((g) => g.name.toUpperCase() === genreName.toUpperCase()).id
+        );
       } else {
         return m;
       }
