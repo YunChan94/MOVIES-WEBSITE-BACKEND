@@ -7,7 +7,6 @@ exports.searchMovie = (req, res, next) => {
   const mediaType = req.body.mediaType;
   const language = req.body.lang;
   const year = req.body.year;
-  console.log(req.body);
   //Nếu không có keyword
   if (!keyword) {
     return res.status(400).send("Not found keyword parram");

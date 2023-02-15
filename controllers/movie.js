@@ -44,7 +44,7 @@ exports.getMovieByGenre = (req, res, next) => {
   //Check xem user req có param genre hay chưa?
   const genreName = req.params.genreName;
   if (!genreName) {
-    return res.status(400).send("Not found gerne parram");
+    return res.status(400).send("Not found genre parram");
   }
 
   //Tìm trong genreList.json
@@ -90,7 +90,7 @@ exports.getVideoByID = (req, res, next) => {
   }
 
   //Tìm videoList của film
-  const film = video.all().find((f) => f.id === Number(filmID));
+  const film = video.all().find((f) => f.id === filmID);
 
   //Trả lỗi nếu không tìm được film
   if (!film) {
